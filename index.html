@@ -1,0 +1,345 @@
+<title>تقویم محتوای مهر</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Lalezar&family=Vazirmatn:wght@400;500;700;800&display=swap">
+<style>
+/* Layout: a drafting sheet. Grey blueprint grid ground, a dimension line spanning the 15 days,
+   a 7-column week calendar of glossy tiles, and a drawing-style title block at the foot.
+   On phones the weeks collapse into one ruled list. */
+:root {
+  --bg: #cdd3da;
+  --grid: rgba(40, 66, 100, .15);
+  --grid-major: rgba(40, 66, 100, .26);
+  --paper: #f5f7f9;
+  --paper2: #dde3e9;
+  --sheen: rgba(255, 255, 255, .8);
+  --edge: #a9b3be;
+  --ink: #1c2631;
+  --ink-soft: #4f5d6c;
+  --shadow: rgba(30, 48, 70, .35);
+  --reel: #d94a2b;
+  --slide: #2b6cb8;
+  --story: #c48410;
+  --display: "Lalezar", "Vazirmatn", system-ui, sans-serif;
+  --body: "Vazirmatn", system-ui, "Segoe UI", Tahoma, sans-serif;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #161b22;
+    --grid: rgba(140, 170, 210, .09);
+    --grid-major: rgba(140, 170, 210, .17);
+    --paper: #2d3640;
+    --paper2: #212830;
+    --sheen: rgba(255, 255, 255, .11);
+    --edge: #3f4a56;
+    --ink: #e9eef3;
+    --ink-soft: #9dabb9;
+    --shadow: rgba(0, 0, 0, .6);
+    --reel: #f06a4a;
+    --slide: #5b9be0;
+    --story: #e8ac3a;
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #161b22;
+  --grid: rgba(140, 170, 210, .09);
+  --grid-major: rgba(140, 170, 210, .17);
+  --paper: #2d3640;
+  --paper2: #212830;
+  --sheen: rgba(255, 255, 255, .11);
+  --edge: #3f4a56;
+  --ink: #e9eef3;
+  --ink-soft: #9dabb9;
+  --shadow: rgba(0, 0, 0, .6);
+  --reel: #f06a4a;
+  --slide: #5b9be0;
+  --story: #e8ac3a;
+  color-scheme: dark;
+}
+
+* { box-sizing: border-box; }
+body {
+  direction: rtl;
+  margin: 0;
+  padding-inline: 16px;
+  padding-block: 28px 40px;
+  background-color: var(--bg);
+  background-image:
+    linear-gradient(var(--grid-major) 1px, transparent 1px),
+    linear-gradient(90deg, var(--grid-major) 1px, transparent 1px),
+    linear-gradient(var(--grid) 1px, transparent 1px),
+    linear-gradient(90deg, var(--grid) 1px, transparent 1px);
+  background-size: 120px 120px, 120px 120px, 24px 24px, 24px 24px;
+  background-position: -1px -1px;
+  color: var(--ink);
+  font-family: var(--body);
+  font-size: 15px;
+  line-height: 1.7;
+  min-height: 100vh;
+}
+.sheet {
+  max-width: 1080px;
+  margin-inline: auto;
+  position: relative;
+  padding-block: 8px;
+}
+/* corner registration marks */
+.sheet::before, .sheet::after {
+  content: "";
+  position: absolute;
+  width: 22px; height: 22px;
+  border: 1.5px solid var(--ink-soft);
+  opacity: .55;
+  pointer-events: none;
+}
+.sheet::before { top: -10px; inset-inline-start: -2px; border-width: 1.5px 0 0 1.5px; }
+.sheet::after { bottom: -10px; inset-inline-end: -2px; border-width: 0 1.5px 1.5px 0; }
+
+header { display: flex; flex-direction: column; gap: 10px; padding-block: 8px 4px; }
+.eyebrow {
+  font-size: 12px;
+  letter-spacing: .06em;
+  color: var(--ink-soft);
+  font-weight: 500;
+  display: flex; gap: 10px; align-items: center; flex-wrap: wrap;
+}
+.eyebrow b {
+  font-weight: 700; color: var(--ink);
+  border: 1px solid var(--ink-soft); padding: 0 8px; border-radius: 3px;
+}
+h1 {
+  margin: 0;
+  font-family: var(--display);
+  font-weight: 400;
+  font-size: clamp(40px, 7vw, 68px);
+  line-height: 1.15;
+  letter-spacing: 0;
+  text-wrap: balance;
+}
+.lede { margin: 0; max-width: 62ch; color: var(--ink-soft); text-wrap: pretty; }
+
+.legend { display: flex; flex-wrap: wrap; gap: 10px; margin-block: 14px 0; }
+.chip {
+  appearance: none; font: inherit; cursor: pointer;
+  display: inline-flex; align-items: center; gap: 10px;
+  padding: 6px 14px 6px 8px; border-radius: 999px;
+  color: var(--ink);
+  background: linear-gradient(180deg, var(--paper), var(--paper2));
+  border: 1px solid var(--edge);
+  box-shadow: inset 0 1px 0 var(--sheen), 0 6px 14px -8px var(--shadow);
+  font-weight: 700; font-size: 14px;
+  transition: transform .15s ease, box-shadow .15s ease;
+}
+.chip small { font-weight: 500; color: var(--ink-soft); font-size: 12px; font-variant-numeric: tabular-nums; }
+.chip:hover { transform: translateY(-1px); }
+.chip[aria-pressed="true"] { outline: 2px solid var(--c); outline-offset: 2px; }
+
+.t-reel { --c: var(--reel); }
+.t-slide { --c: var(--slide); }
+.t-story { --c: var(--story); }
+.t-spare { --c: var(--ink-soft); }
+div.cell { cursor: default; border-style: dashed; }
+div.cell:hover { transform: none; }
+
+.orb {
+  --s: 38px;
+  width: var(--s); height: var(--s); flex: none;
+  border-radius: 50%;
+  display: grid; place-items: center;
+  background: radial-gradient(circle at 32% 24%, color-mix(in srgb, var(--c) 40%, #fff) 0, var(--c) 52%, color-mix(in srgb, var(--c) 68%, #000) 100%);
+  box-shadow: inset 0 1px 1px rgba(255,255,255,.65), inset 0 -3px 6px rgba(0,0,0,.18), 0 5px 10px -3px color-mix(in srgb, var(--c) 65%, transparent);
+}
+.orb svg { width: 56%; height: 56%; stroke: #fff; fill: none; stroke-width: 1.9; stroke-linecap: round; stroke-linejoin: round; filter: drop-shadow(0 1px 1px rgba(0,0,0,.25)); }
+.chip .orb { --s: 26px; }
+
+/* dimension line */
+.dim {
+  display: flex; align-items: center; gap: 12px;
+  margin-block: 22px 14px;
+  font-size: 12px; color: var(--ink-soft); font-weight: 500;
+}
+.dim .line { flex: 1; height: 0; border-top: 1.5px solid var(--ink-soft); position: relative; opacity: .8; min-width: 20px; }
+.dim .line::before, .dim .line::after {
+  content: ""; position: absolute; top: -6px; width: 0; height: 11px; border-inline-start: 1.5px solid var(--ink-soft);
+}
+.dim .line::before { inset-inline-start: 0; }
+.dim .line::after { inset-inline-end: 0; }
+.dim span { white-space: nowrap; background: var(--bg); padding-inline: 6px; border-radius: 3px; }
+.dim .mid { color: var(--ink); font-weight: 700; }
+
+/* calendar */
+.cal { display: grid; grid-template-columns: repeat(7, minmax(0, 1fr)); gap: 10px; }
+.wd-head {
+  text-align: center; font-size: 12px; font-weight: 700; letter-spacing: .04em;
+  color: var(--ink-soft); padding-block: 4px 2px;
+  border-bottom: 1.5px solid var(--ink-soft);
+  margin-bottom: 2px;
+}
+.wd-head.fri { color: var(--story); }
+.void {
+  border: 1.5px dashed var(--grid-major); border-radius: 14px; min-height: 140px; opacity: .8;
+  background: repeating-linear-gradient(135deg, transparent 0 8px, var(--grid) 8px 9px);
+}
+.cell {
+  appearance: none; font: inherit; text-align: start; color: var(--ink); cursor: pointer;
+  position: relative; overflow: hidden;
+  min-height: 140px; padding: 12px;
+  display: flex; flex-direction: column; justify-content: space-between; gap: 10px;
+  border-radius: 14px;
+  background: linear-gradient(180deg, var(--paper) 0%, var(--paper2) 100%);
+  border: 1px solid var(--edge);
+  box-shadow: inset 0 1px 0 var(--sheen), inset 0 -1px 0 rgba(0,0,0,.06), 0 14px 22px -16px var(--shadow), 0 2px 3px -1px var(--shadow);
+  transition: transform .18s ease, opacity .18s ease, box-shadow .18s ease;
+}
+.cell::before {
+  content: ""; position: absolute; inset: 0 0 auto 0; height: 46%;
+  background: linear-gradient(180deg, var(--sheen), transparent);
+  border-radius: 14px 14px 60% 60% / 14px 14px 22px 22px;
+  pointer-events: none;
+}
+.cell > * { position: relative; }
+.cell:hover { transform: translateY(-2px); }
+.top { display: flex; justify-content: space-between; align-items: flex-start; gap: 8px; }
+.num { font-family: var(--display); font-size: 40px; line-height: 1; font-variant-numeric: tabular-nums; }
+.wd { display: none; font-size: 12px; color: var(--ink-soft); font-weight: 500; }
+.lab { display: flex; flex-direction: column; gap: 0; min-width: 0; }
+.lab strong { font-size: 15px; font-weight: 800; line-height: 1.5; }
+.lab em { font-style: normal; font-size: 12px; color: var(--ink-soft); line-height: 1.5; }
+.tick {
+  display: none; position: absolute; inset-block-start: 10px; inset-inline-end: 10px;
+}
+.cell[aria-pressed="true"] { opacity: .62; }
+.cell[aria-pressed="true"] .num { text-decoration: line-through; text-decoration-thickness: 2px; text-decoration-color: var(--c); }
+.cell[aria-pressed="true"] .lab em::after { content: " · آپلود شد"; color: var(--c); font-weight: 700; }
+.cell.dimmed { opacity: .28; }
+.cell:focus-visible, .chip:focus-visible { outline: 3px solid var(--ink); outline-offset: 2px; }
+
+.note { margin-block: 16px 0; font-size: 12.5px; color: var(--ink-soft); }
+
+/* title block */
+.tb {
+  margin-block: 28px 0;
+  display: grid; grid-template-columns: 1.4fr 1fr 1fr 1fr;
+  border: 1.5px solid var(--ink-soft); border-radius: 4px;
+  background: color-mix(in srgb, var(--bg) 70%, transparent);
+}
+.tb div { padding: 8px 14px; border-inline-start: 1px solid var(--ink-soft); min-width: 0; }
+.tb div:first-child { border-inline-start: 0; }
+.tb span { display: block; font-size: 11px; letter-spacing: .06em; color: var(--ink-soft); font-weight: 500; }
+.tb b { font-weight: 700; font-size: 14px; }
+
+@media (max-width: 760px) {
+  body { padding-block: 20px 32px; }
+  .cal { grid-template-columns: 1fr; gap: 8px; }
+  .wd-head, .void { display: none; }
+  .cell { min-height: 0; flex-direction: row; align-items: center; justify-content: flex-start; gap: 16px; padding: 12px 14px; }
+  .cell::before { border-radius: 14px 14px 50% 50% / 14px 14px 12px 12px; height: 50%; }
+  .top { flex: none; align-items: center; gap: 14px; }
+  .lab { flex: 1; }
+  .wd { display: block; text-align: start; }
+  .num { font-size: 34px; min-width: 2.2ch; text-align: center; }
+  .lab strong { font-size: 16px; }
+  .dim span { font-size: 11px; }
+  .tb { grid-template-columns: 1fr 1fr; }
+  .tb div:nth-child(3) { border-inline-start: 0; }
+  .tb div:nth-child(n+3) { border-top: 1px solid var(--ink-soft); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .cell, .chip { transition: none; }
+  .cell:hover, .chip:hover { transform: none; }
+}
+</style>
+
+<main class="sheet">
+  <header>
+    <div class="eyebrow"><b>نقشهٔ انتشار</b><span>۱۶ تا ۳۰ مهر ۱۴۰۵</span></div>
+    <h1>تقویم محتوای مهر</h1>
+    <p class="lede">این برنامه بر پایهٔ بازخورد پست‌های قبلی در روزهای مختلف هفته چیده شده و هدفش گرفتن بهترین بازخورد برای ریلزهاست. ریلزها در روزهایی می‌آیند که بهتر دیده شده‌اند و بعد از هر دو ریلز یک پست اسلایدی قرار می‌گیرد تا ریتم پیج حفظ شود. جمعه‌ها استوری تعاملی است و سه روز آخر برای جبران عقب‌افتادگی خالی مانده.</p>
+    <div class="legend" id="legend" role="group" aria-label="فیلتر نوع محتوا"></div>
+  </header>
+
+  <div class="dim" aria-hidden="true">
+    <span>۱۶ مهر</span><div class="line"></div><span class="mid">۱۵ روز</span><div class="line"></div><span>۳۰ مهر</span>
+  </div>
+
+  <section class="cal" id="cal" aria-label="تقویم انتشار"></section>
+  <p class="note">برای علامت‌زدن پستِ آپلودشده روی همان روز بزن. این علامت فقط در همین مرورگر می‌ماند.</p>
+
+  <div class="tb">
+    <div><span>مبنا</span><b>بازخورد پست‌های قبلی</b></div>
+    <div><span>بازه</span><b>۱۶ تا ۳۰ مهر</b></div>
+    <div><span>الگو</span><b>۲ ریلز، ۱ اسلاید</b></div>
+    <div><span>جمعه‌ها</span><b>استوری تعاملی</b></div>
+  </div>
+</main>
+
+<script>
+(function () {
+  var TYPES = {
+    reel:  { name: "ریلز", hint: "ویدیو کوتاه", icon: '<svg viewBox="0 0 24 24"><rect x="3.5" y="3.5" width="17" height="17" rx="4.5"/><path d="M10 8.6v6.8l5.4-3.4z" fill="#fff"/></svg>' },
+    slide: { name: "پست اسلایدی", hint: "چند اسلاید پشت‌هم", icon: '<svg viewBox="0 0 24 24"><rect x="7.5" y="6.5" width="13" height="13" rx="3"/><path d="M4 16V7a3 3 0 0 1 3-3h9"/></svg>' },
+    story: { name: "استوری تعاملی", hint: "نظرسنجی یا سؤال", icon: '<svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="8.5"/><path d="M12 8v8M8 12h8"/></svg>' },
+    spare: { name: "روز ذخیره", hint: "بدون پست، برای جبران", icon: '<svg viewBox="0 0 24 24"><path d="M8 7v10M16 7v10"/></svg>' }
+  };
+  var POSTS = 10; /* ۳۳ ← ۴۳ */
+  var WD = ["شنبه","یکشنبه","دوشنبه","سه‌شنبه","چهارشنبه","پنجشنبه","جمعه"];
+  var fa = function (n) { return String(n).replace(/\d/g, function (d) { return "۰۱۲۳۴۵۶۷۸۹"[d]; }); };
+
+  var FIRST = 16, LAST = 30, FIRST_WD = 5; /* 16 مهر = پنجشنبه (شنبه = 0) */
+  var days = [], c = 0;
+  for (var d = FIRST; d <= LAST; d++) {
+    var wd = (FIRST_WD + d - FIRST) % 7, type;
+    if (wd === 6) type = "story";
+    else if (c >= POSTS) type = "spare";
+    else { type = (c % 3 === 2) ? "slide" : "reel"; c++; }
+    days.push({ d: d, wd: wd, type: type });
+  }
+
+  var done = {};
+  try { done = JSON.parse(localStorage.getItem("mehr-done") || "{}") || {}; } catch (e) { done = {}; }
+  var save = function () { try { localStorage.setItem("mehr-done", JSON.stringify(done)); } catch (e) {} };
+
+  var cal = document.getElementById("cal");
+  var html = "";
+  WD.forEach(function (n, i) { html += '<div class="wd-head' + (i === 6 ? " fri" : "") + '" aria-hidden="true">' + n + "</div>"; });
+  for (var i = 0; i < FIRST_WD; i++) html += '<div class="void" aria-hidden="true"></div>';
+  days.forEach(function (x) {
+    var t = TYPES[x.type];
+    var spare = x.type === "spare";
+    var open = spare ? '<div class="cell t-spare" data-type="spare" data-day="' + x.d + '">'
+      : '<button type="button" class="cell t-' + x.type + '" data-type="' + x.type + '" data-day="' + x.d + '" aria-pressed="' + (done[x.d] ? "true" : "false") + '" aria-label="' + WD[x.wd] + " " + fa(x.d) + " مهر، " + t.name + '">';
+    html += open +
+      '<div class="top"><div><div class="num">' + fa(x.d) + '</div><div class="wd">' + WD[x.wd] + '</div></div><span class="orb">' + t.icon + '</span></div>' +
+      '<div class="lab"><strong>' + t.name + '</strong><em>' + t.hint + '</em></div>' + (spare ? "</div>" : "</button>");
+  });
+  var filled = FIRST_WD + days.length, rest = (7 - filled % 7) % 7;
+  for (var j = 0; j < rest; j++) html += '<div class="void" aria-hidden="true"></div>';
+  cal.innerHTML = html;
+
+  cal.addEventListener("click", function (e) {
+    var b = e.target.closest("button.cell"); if (!b) return;
+    var k = b.getAttribute("data-day"), on = b.getAttribute("aria-pressed") !== "true";
+    b.setAttribute("aria-pressed", on ? "true" : "false");
+    if (on) done[k] = 1; else delete done[k];
+    save();
+  });
+
+  var counts = { reel: 0, slide: 0, story: 0 };
+  days.forEach(function (x) { counts[x.type]++; });
+  var legend = document.getElementById("legend"), active = null;
+  Object.keys(TYPES).forEach(function (k) {
+    var b = document.createElement("button");
+    b.type = "button"; b.className = "chip t-" + k; b.setAttribute("data-type", k); b.setAttribute("aria-pressed", "false");
+    b.innerHTML = '<span class="orb">' + TYPES[k].icon + "</span>" + TYPES[k].name + " <small>" + fa(counts[k]) + " روز</small>";
+    legend.appendChild(b);
+  });
+  legend.addEventListener("click", function (e) {
+    var b = e.target.closest(".chip"); if (!b) return;
+    var k = b.getAttribute("data-type");
+    active = (active === k) ? null : k;
+    legend.querySelectorAll(".chip").forEach(function (x) { x.setAttribute("aria-pressed", x.getAttribute("data-type") === active ? "true" : "false"); });
+    cal.querySelectorAll(".cell").forEach(function (x) { x.classList.toggle("dimmed", !!active && x.getAttribute("data-type") !== active); });
+  });
+})();
+</script>
